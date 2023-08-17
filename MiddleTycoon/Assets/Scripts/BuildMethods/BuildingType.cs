@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager
+[System.Serializable]
+public enum BuildType
 {
-    
+    SmithHome,House,Farm,Barracks
 }

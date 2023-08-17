@@ -8,14 +8,23 @@ public class BuildStates
 {
     public float buildingCost;
     public bool isInstallAble;
-    private GameObject buildingPrefab;
-    public GameObject BuildingPrefab { get { return buildingPrefab; } set { buildingPrefab = value; getBuildingValue(BuildingPrefab); } }
+    public GameObject buildingPrefab;
+    public GameObject buildingPreview;
     public Collider buildingCollider;
     public MeshFilter buildingMeshFilter;
 
-    public void getBuildingValue(GameObject GO)
+
+    public void GetBuildingValue(GameObject GO)
     {
+        buildingPrefab = GO;
         buildingMeshFilter = ComponentPipeLine.LargestMeshFilter(buildingPrefab);
         buildingCollider = ComponentPipeLine.GetCompo<BoxCollider>(buildingMeshFilter.gameObject);
+    }
+    public void BuildInstall()
+    {
+        buildingPrefab = null;
+        buildingMeshFilter = null;
+        buildingCollider = null;
+        buildingPreview = null;
     }
 }
