@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9091241831592417249}
   - component: {fileID: -5640325725525118821}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SmithHome
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,6 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e2b5442a2455547b370b9e02bb9354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BT: 0
 --- !u!1001 &605066837161417749
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -384,6 +385,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1116401500781834, guid: 9ef0f605191ff7140b0741a4b04ba3de, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7126994132669856342}
+    - targetCorrespondingSourceObject: {fileID: 1116401500781834, guid: 9ef0f605191ff7140b0741a4b04ba3de, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8367604931063380382}
   m_SourcePrefab: {fileID: 100100000, guid: 9ef0f605191ff7140b0741a4b04ba3de, type: 3}
 --- !u!4 &3162946552986596141 stripped
 Transform:
@@ -416,6 +420,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.814979, y: 7.547199, z: 14.317305}
   m_Center: {x: -0.2148389, y: 3.7662275, z: -1.834337}
+--- !u!114 &-8367604931063380382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3164247814320151385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e2b5442a2455547b370b9e02bb9354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BT: 0
 --- !u!1001 &4281503919476276603
 PrefabInstance:
   m_ObjectHideFlags: 0

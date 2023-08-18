@@ -22,6 +22,34 @@ public class ComponentPipeLine
         return component;
         
     }
+    public static List<T> GetAllChildComponent<T>(GameObject GO) where T : Component
+    {
+        List<T> component = new List<T>();
+        if(GO.GetComponent<T>() != null)
+        {
+            component.Add(GO.GetComponent<T>());
+        }
+        for (int i = 0; i < GO.transform.childCount; i++)
+        {
+            if (GO.transform.GetChild(i).GetComponent<T>() != null)
+            {
+                component.Add(GO.transform.GetChild(i).GetComponent<T>());
+            }
+            
+            if (GO.transform.GetChild(i).childCount != 0)
+            {
+                for (int E = 0; E < GO.transform.GetChild(i).childCount; E++)
+                {
+                    if (GO.transform.GetChild(i).GetChild(E).GetComponent<T>() != null)
+                    {
+                        component.Add(GO.transform.GetChild(i).GetChild(E).GetComponent<T>());
+                    }
+                }
+            }
+        }
+
+        return component;
+    }
     public static MeshFilter LargestMeshFilter(GameObject GO)
     {
         MeshFilter mesh = null;

@@ -9,6 +9,7 @@ public class TestController : MonoBehaviour
     public BuildStates buildStates;
     public RaycastHit hit;
     public Ray mouseRay;
+    public RaycastHit buildingHit;
     private void Start()
     {
         buildStates = Managers.BuildManager.buildState;

@@ -302,7 +302,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.5, y: 4.38, z: -15}
+  m_LocalPosition: {x: 10.5, y: 4.38, z: -40.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -439,7 +439,7 @@ GameObject:
   - component: {fileID: 1830889429}
   - component: {fileID: 1830889430}
   m_Layer: 0
-  m_Name: Manager
+  m_Name: '@Managers'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -475,12 +475,14 @@ MonoBehaviour:
   _building:
     buildState:
       buildingCost: 0
-      isInstallAble: 0
       buildingPrefab: {fileID: 0}
       buildingPreview: {fileID: 0}
       buildingCollider: {fileID: 0}
       buildingMeshFilter: {fileID: 0}
-    buildValueExel: {fileID: 0}
+      Frame: {fileID: 0}
+      allMeshRenderer: []
+      originalMaterials: []
+      installMat: {fileID: 0}
 --- !u!114 &1830889430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,11 +498,14 @@ MonoBehaviour:
   testPrefab: {fileID: 3183892471235657110, guid: fbeaa23076d6f4548aeaf97910fc6de5, type: 3}
   buildStates:
     buildingCost: 0
-    isInstallAble: 0
     buildingPrefab: {fileID: 0}
     buildingPreview: {fileID: 0}
     buildingCollider: {fileID: 0}
     buildingMeshFilter: {fileID: 0}
+    Frame: {fileID: 0}
+    allMeshRenderer: []
+    originalMaterials: []
+    installMat: {fileID: 0}
 --- !u!1 &2014246322
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,7 +606,7 @@ Transform:
   m_GameObject: {fileID: 2014246322}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6.1707, y: 6.1707, z: 6.1707}
+  m_LocalScale: {x: 60.039062, y: 60.039062, z: 60.039062}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
