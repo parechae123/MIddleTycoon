@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static ComponentPipeLine;
 
 public class GridTest : MonoBehaviour
 {
     public Vector3 savePos;
     public float gridPivot;
     public Vector2Int[] axisLimit = new Vector2Int[2];//[0] = Min ,[1]=Max
-    public bool[,] gridCollCheck = new bool[10,10];
+    public HashSet<Vector2Int> gridColl = new HashSet<Vector2Int>();
     // Start is called before the first frame update
     void Start()
     {
@@ -22,24 +23,65 @@ public class GridTest : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if (savePos.x >= axisLimit[0].x && savePos.x <= axisLimit[1].x && savePos.y >= axisLimit[0].y && savePos.y <= axisLimit[1].y)
-            {
-                if (true/* 여기다가 충돌체 있는지 감지하기*/)
+            {                    
+                Vector2Int gridPos = VectorFTI(new Vector2(savePos.x, savePos.y));
+                GameObject aa = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                if (CollTest(GridMax(LargestMeshFilter(aa).mesh.bounds.min, LargestMeshFilter(aa).mesh.bounds.max, gridPos, false)))
                 {
-                    GameObject aa = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                    GridMax(LargestMeshFilter(aa).mesh.bounds.min, LargestMeshFilter(aa).mesh.bounds.max, gridPos,true);
                     aa.transform.position = VectorFTI(savePos);
-                    Debug.Log(VectorFTI(savePos)); 
+                }
+                else
+                {
+                    Destroy(aa);
                 }
             }
             //범위 밖이므로 UI메니저에서 추후 에러문 출력필요
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            axisLimit[0] -= Vector2Int.one;
         }
     }
 
     public Vector3Int VectorFTI(Vector3 orig)
     {
         return new Vector3Int(Mathf.RoundToInt(Mathf.Clamp(orig.x, axisLimit[0].x, axisLimit[1].x)), Mathf.RoundToInt(Mathf.Clamp(orig.y, axisLimit[0].y, axisLimit[1].y)), Mathf.RoundToInt(orig.z));
+    }
+    public Vector2Int VectorFTI(Vector2 orig)
+    {
+        return new Vector2Int(Mathf.RoundToInt(Mathf.Clamp(orig.x, axisLimit[0].x, axisLimit[1].x)), Mathf.RoundToInt(Mathf.Clamp(orig.y, axisLimit[0].y, axisLimit[1].y)));
+    }
+    public List<Vector2Int> GridMax(Vector3 min,Vector3 max,Vector2Int centerPos,bool addCollider)
+    {
+        List<Vector2Int> list = new List<Vector2Int>();
+        list.Add(new Vector2Int(Mathf.FloorToInt(min.x), Mathf.FloorToInt(min.y))+ centerPos);
+        list.Add(new Vector2Int(Mathf.CeilToInt(max.x), Mathf.CeilToInt(max.y))+ centerPos);
+        for (int i = list[0].x; i <= list[1].x; i++)
+        {
+            for (int e = list[0].y; e <= list[1].y; e++)
+            {
+                if (new Vector2Int(i,e) != list[0] && new Vector2Int(i, e) != list[1])
+                {
+                    if (addCollider)
+                    {
+                        gridColl.Add(new Vector2Int(i, e));
+                    }
+                    else
+                    {
+                        list.Add(new Vector2Int(i, e));
+                        Debug.Log(list[list.Count - 1]);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+    public bool CollTest(List<Vector2Int> posList)
+    {
+        for (int i = 0; i <= posList.Count-1; i++)
+        {
+            if (gridColl.Contains(posList[i]))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

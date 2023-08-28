@@ -60,7 +60,6 @@ public class ComponentPipeLine
         }
         for (int i = 0; i < GO.transform.childCount; i++)
         {
-            Debug.Log(i);
             tempMesh = GO.transform.GetChild(i).GetComponent<MeshFilter>();
             if(mesh == null)
             {
@@ -71,7 +70,6 @@ public class ComponentPipeLine
                 mesh = tempMesh;
             }
         }
-        Debug.Log(mesh);
         return mesh;
     }
 }
