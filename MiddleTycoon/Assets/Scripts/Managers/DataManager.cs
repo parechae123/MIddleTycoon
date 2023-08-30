@@ -14,14 +14,15 @@ public class DataManager
         {
             buildValueExel = DT.Result;
             Debug.Log("등록");
-            Addressables.Release(OpperHandle);
+            Addressables.Release(DT);
         };
         var GetInstallMatHandle = Addressables.LoadAssetAsync<Material>("InstallMat");
         GetInstallMatHandle.Completed += (MT) =>
         {
             Managers.BuildManager.buildState.installMat = MT.Result;
             Debug.Log("등록");
-            Addressables.Release(GetInstallMatHandle);
+            Addressables.Release(MT);
         };
     }
+
 }

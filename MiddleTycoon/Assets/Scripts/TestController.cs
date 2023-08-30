@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class TestController : MonoBehaviour
     public RaycastHit hit;
     public Ray mouseRay;
     public RaycastHit buildingHit;
+    public delegate void LoadingWaiter(string key);
+    public LoadingWaiter loadingWaiter;
     private void Start()
     {
         buildStates = Managers.BuildManager.buildState;
@@ -20,8 +23,9 @@ public class TestController : MonoBehaviour
         mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Input.GetKeyDown(KeyCode.A))
         {
-            buildStates.GetBuildingValue(testPrefab);
-            buildStates.buildingPreview = Instantiate(buildStates.buildingPrefab);
+/*            loadingWaiter = Managers.BuildManager.LoadingBuilding;*/
+            loadingWaiter += LoadingResetter;
+            loadingWaiter("SmithHouse");
         }
         if (buildStates.buildingPrefab != null)
         {
@@ -30,9 +34,13 @@ public class TestController : MonoBehaviour
                 buildStates.buildingPreview.transform.position = new Vector3(hit.point.x, 0, 0);
                 if (Input.GetMouseButtonDown(0))
                 {
-                    buildStates.BuildInstall();
+                    buildStates.BuildReset();
                 }
             }
         }
+    }
+    void LoadingResetter(string nothing)
+    {
+        loadingWaiter = null;
     }
 }

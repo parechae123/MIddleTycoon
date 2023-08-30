@@ -4,15 +4,18 @@ using static ComponentPipeLine;
 
 public class GridTest : MonoBehaviour
 {
+    public BuildStates buildStates;
+    public delegate void LoadingWaiter(string key);
+    public LoadingWaiter loadingWaiter;
     public Vector3 savePos; //마우스 클릭 좌표 위치
     public float gridPivot;
     public Vector2Int[] axisLimit = new Vector2Int[2];//[0] = Min ,[1]=Max
     public HashSet<Vector2Int> gridColl = new HashSet<Vector2Int>();
-    public GameObject installPreview;
     // Start is called before the first frame update
     void Start()
     {
         gridPivot = GameObject.Find("@Grid").transform.position.z;
+        buildStates = Managers.BuildManager.buildState;
     }
     // Update is called once per frame
     void Update()
@@ -20,36 +23,50 @@ public class GridTest : MonoBehaviour
         savePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, gridPivot - Camera.main.transform.position.z));
         if (Input.GetMouseButtonDown(0))
         {
-            if (savePos.x >= axisLimit[0].x && savePos.x <= axisLimit[1].x && savePos.y >= axisLimit[0].y && savePos.y <= axisLimit[1].y&&installPreview != null)
+            if (savePos.x >= axisLimit[0].x && savePos.x <= axisLimit[1].x && savePos.y >= axisLimit[0].y && savePos.y <= axisLimit[1].y&& buildStates.buildingPreview != null)
             {
-                if (CollTest(GridMax(LargestMeshFilter(installPreview).mesh.bounds.min, LargestMeshFilter(installPreview).mesh.bounds.max, VectorFTI(new Vector2(savePos.x, savePos.y)), false)))
+                if (CollTest(GridMax(buildStates.buildingMeshFilter.sharedMesh.bounds.min, buildStates.buildingMeshFilter.sharedMesh.bounds.max, VectorFTI(new Vector2(savePos.x, savePos.y)), false)))
                 {
-                    GridMax(LargestMeshFilter(installPreview).mesh.bounds.min, LargestMeshFilter(installPreview).mesh.bounds.max, VectorFTI(new Vector2(savePos.x, savePos.y)), true);
-                    installPreview.transform.position = VectorFTI(savePos);
-                    installPreview = null;
+                    GridMax(buildStates.buildingMeshFilter.sharedMesh.bounds.min, buildStates.buildingMeshFilter.sharedMesh.bounds.max, VectorFTI(new Vector2(savePos.x, savePos.y)), true);
+                    buildStates.buildingPreview.transform.position = VectorFTI(savePos);
+                    buildStates.BuildReset();
                 }
                 else
                 {
-                    Destroy(installPreview);
+                    Destroy(buildStates.buildingPreview);
+                    buildStates.BuildReset();
                 }
             }
             //범위 밖이므로 UI메니저에서 추후 에러문 출력필요
         }
-        if (Input.GetKeyDown(KeyCode.A)&&installPreview == null)
+        if (Input.GetKeyDown(KeyCode.A)&& buildStates.buildingPreview == null)
         {
-            installPreview = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            Managers.BuildManager.LoadingBuilding("SmithHouse", () =>
+            {
+                //로딩빌딩이 끝났을때니까 여기다가 리셋하고 인스턴시에이터
+                LoadingInstantiater();
+            });
+/*            loadingWaiter += Managers.BuildManager.LoadingBuilding;
+            loadingWaiter += LoadingInstantiater;
+            loadingWaiter += LoadingResetter;
+            loadingWaiter("SmithHouse");*/
         }
-        if (Input.GetKeyDown(KeyCode.S) && installPreview == null)
+        if (Input.GetKeyDown(KeyCode.S) && buildStates.buildingPreview == null)
         {
-            installPreview = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            buildStates.buildingPreview = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         }
-        if (Input.GetKeyDown(KeyCode.D) && installPreview == null)
+        if (Input.GetKeyDown(KeyCode.D) && buildStates.buildingPreview == null)
         {
-            installPreview = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            buildStates.buildingPreview = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         }
-        if (installPreview != null&&CollTest(GridMax(LargestMeshFilter(installPreview).mesh.bounds.min, LargestMeshFilter(installPreview).mesh.bounds.max, VectorFTI(new Vector2(savePos.x, savePos.y)), false)))
+        if (buildStates.buildingPreview != null && CollTest(GridMax(buildStates.buildingMeshFilter.sharedMesh.bounds.min, buildStates.buildingMeshFilter.sharedMesh.bounds.max, VectorFTI(new Vector2(savePos.x, savePos.y)), false)))
         {
-            installPreview.transform.position = VectorFTI(savePos);
+            //닿는게 없을 시
+            buildStates.buildingPreview.transform.position = VectorFTI(savePos);
+        }
+        else if (buildStates.buildingPreview != null && !CollTest(GridMax(buildStates.buildingMeshFilter.sharedMesh.bounds.min, buildStates.buildingMeshFilter.sharedMesh.bounds.max, VectorFTI(new Vector2(savePos.x, savePos.y)), false)))
+        {
+            Debug.Log("안되네");
         }
     }
 
@@ -100,5 +117,9 @@ public class GridTest : MonoBehaviour
             }
         }
         return true;
+    }
+    void LoadingInstantiater()
+    {
+        buildStates.buildingPreview = Instantiate(buildStates.buildingPrefab);
     }
 }

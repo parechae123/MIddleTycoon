@@ -48,7 +48,7 @@ public class BuildStates
             //UI메니저 만들어서 화면에 글자출력 필요 작업필요
         }
     }
-    public void BuildInstall()
+    public void BuildReset()
     {
         buildingPrefab = null;
         buildingMeshFilter = null;
